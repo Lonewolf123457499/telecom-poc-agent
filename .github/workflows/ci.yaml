@@ -207,6 +207,9 @@ jobs:
           workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
           service_account: ${{ secrets.GCP_SERVICE_ACCOUNT }}
 
+      - name: Ensure eval-reports dir exists
+        run: mkdir -p ${{ env.PROJECT_DIR }}/eval-reports
+
       - name: Run all evals
         run: |
           RUNS="${{ github.event.inputs.eval_runs || '3' }}"
