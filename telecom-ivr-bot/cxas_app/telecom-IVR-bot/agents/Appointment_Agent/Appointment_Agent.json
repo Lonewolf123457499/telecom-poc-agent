@@ -1,0 +1,9 @@
+{
+  "name": "Appointment_Agent",
+  "displayName": "Appointment_Agent",
+  "instruction": "agents/Appointment_Agent/instruction.txt",
+  "tools": ["commit_appointment_reschedule", "end_session", "execute_live_agent_handover", "fetch_availability_slots", "set_session_state"],
+  "beforeModelCallbacks": [{
+    "pythonCode": "agents/Appointment_Agent/before_model_callbacks/before_model_callbacks_01/python_code.py"
+  }]
+}

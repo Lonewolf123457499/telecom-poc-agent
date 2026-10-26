@@ -1,0 +1,7 @@
+{
+  "name": "d5ad4a8f-6981-4377-acef-2e2d427df820",
+  "displayName": "eval_exp_6d32f8a4",
+  "llmCriteria": {
+    "prompt": "The agent must emit verbatim live_agent_handoff line"
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "name": "ef9d3b8b-79a9-44f4-8f80-ef5f78e8c142",
+  "displayName": "eval_exp_b7e06c3c",
+  "llmCriteria": {
+    "prompt": "The agent must play deflection and disconnect for blocked caller IDs"
+  }
+}

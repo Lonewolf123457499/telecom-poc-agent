@@ -1,0 +1,7 @@
+{
+  "name": "3523e95b-d2af-435f-93b0-c639a4130379",
+  "displayName": "eval_exp_ca725fee",
+  "llmCriteria": {
+    "prompt": "The agent must call execute_live_agent_handover with reason disambig_max_attempts"
+  }
+}

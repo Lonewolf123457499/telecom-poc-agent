@@ -1,0 +1,10 @@
+{
+  "name": "fetch_recent_bills",
+  "pythonFunction": {
+    "name": "fetch_recent_bills",
+    "pythonCode": "tools/fetch_recent_bills/python_function/python_code.py",
+    "description": "Retrieves recent invoices and itemized charges.\n\nArgs:\n    billing_account: Billing account number.\n\nReturns:\n    dict: Invoices and line items."
+  },
+  "executionType": "SYNCHRONOUS",
+  "displayName": "fetch_recent_bills"
+}

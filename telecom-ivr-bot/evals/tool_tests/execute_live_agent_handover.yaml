@@ -1,0 +1,9 @@
+tests:
+- name: execute_live_agent_handover_test_1
+  tool: execute_live_agent_handover
+  expectations:
+    response:
+    - path: $.result
+      operator: is_not_null
+  args:
+    reason: user_requested_agent

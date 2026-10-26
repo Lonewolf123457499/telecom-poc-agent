@@ -1,0 +1,7 @@
+{
+  "name": "bdf2dd64-5f39-4e59-85ad-bd293071aadb",
+  "displayName": "eval_exp_40bd6ec3",
+  "llmCriteria": {
+    "prompt": "The agent must emit the verbatim recording notice on the opening turn"
+  }
+}

@@ -1,0 +1,15 @@
+tests:
+- name: evaluate_routing_rules_test_1
+  tool: evaluate_routing_rules
+  expectations:
+    response:
+    - path: $.confidence
+      operator: is_not_null
+    - path: $.requires_auth
+      operator: is_not_null
+    - path: $.route
+      operator: is_not_null
+    - path: $.agent_action
+      operator: is_not_null
+  args:
+    utterance: '[utterance]'

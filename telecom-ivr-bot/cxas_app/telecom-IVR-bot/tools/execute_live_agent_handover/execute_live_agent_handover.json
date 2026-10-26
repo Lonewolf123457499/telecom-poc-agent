@@ -1,0 +1,10 @@
+{
+  "name": "execute_live_agent_handover",
+  "pythonFunction": {
+    "name": "execute_live_agent_handover",
+    "pythonCode": "tools/execute_live_agent_handover/python_function/python_code.py",
+    "description": "Dispatches call session to human escalation queue.\n\nArgs:\n    reason: Escalation reason code.\n    session_context: Serialized session context or parameters.\n\nReturns:\n    dict: Escalation routing ID and designated queue."
+  },
+  "executionType": "SYNCHRONOUS",
+  "displayName": "execute_live_agent_handover"
+}

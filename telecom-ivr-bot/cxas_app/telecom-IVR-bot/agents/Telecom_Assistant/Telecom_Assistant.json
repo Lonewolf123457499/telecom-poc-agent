@@ -1,0 +1,13 @@
+{
+  "name": "Telecom_Assistant",
+  "displayName": "Telecom_Assistant",
+  "instruction": "agents/Telecom_Assistant/instruction.txt",
+  "tools": ["end_session", "evaluate_routing_rules", "execute_live_agent_handover", "fetch_customer_profile", "set_session_state"],
+  "childAgents": ["Account_Agent", "Appointment_Agent", "Auth_Agent", "Billing_Agent", "Sales_Agent", "Secondary_Lang_Support_Agent", "Tech_Support_Agent"],
+  "beforeAgentCallbacks": [{
+    "pythonCode": "agents/Telecom_Assistant/before_agent_callbacks/before_agent_callbacks_01/python_code.py"
+  }],
+  "beforeModelCallbacks": [{
+    "pythonCode": "agents/Telecom_Assistant/before_model_callbacks/before_model_callbacks_01/python_code.py"
+  }]
+}

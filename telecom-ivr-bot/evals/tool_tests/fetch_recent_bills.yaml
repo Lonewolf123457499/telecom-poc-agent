@@ -1,0 +1,15 @@
+tests:
+- name: fetch_recent_bills_test_1
+  tool: fetch_recent_bills
+  expectations:
+    response:
+    - path: $.bills
+      operator: is_not_null
+    - path: $.auto_credit_limit
+      operator: is_not_null
+    - path: $.agent_action
+      operator: is_not_null
+    - path: $.status
+      operator: is_not_null
+  args:
+    billing_account: '[billing_account]'

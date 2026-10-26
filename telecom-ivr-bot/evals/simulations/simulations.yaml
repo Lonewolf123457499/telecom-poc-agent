@@ -1,0 +1,17 @@
+# Simulation eval definitions -- local sims run via SCRAPI Sessions API.
+# Fill in goals, success_criteria, and response_guide for each scenario.
+# Tags are required -- the sim runner filters by --priority P0/P1/P2.
+
+evals:
+  - name: example_sim
+    tags: [P0, HIGH]
+    steps:
+      - goal: "TODO: What the sim user wants to accomplish"
+        success_criteria: "TODO: What counts as success"
+        response_guide: "TODO: How the sim user should behave"
+        max_turns: 12
+    expectations:
+      - "TODO: What the agent should do"
+    session_parameters:
+      account_id: "TODO"
+      customer_id: "TODO"

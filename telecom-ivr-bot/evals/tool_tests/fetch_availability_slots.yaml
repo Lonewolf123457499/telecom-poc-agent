@@ -1,0 +1,14 @@
+tests:
+- name: fetch_availability_slots_test_1
+  tool: fetch_availability_slots
+  expectations:
+    response:
+    - path: $.slots
+      operator: is_not_null
+    - path: $.agent_action
+      operator: is_not_null
+    - path: $.status
+      operator: is_not_null
+  args:
+    zip_code: '[zip_code]'
+    service_type: '[service_type]'

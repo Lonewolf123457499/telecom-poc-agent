@@ -1,0 +1,9 @@
+{
+  "name": "Secondary_Lang_Support_Agent",
+  "displayName": "Secondary_Lang_Support_Agent",
+  "instruction": "agents/Secondary_Lang_Support_Agent/instruction.txt",
+  "tools": ["check_regional_outage", "end_session", "execute_live_agent_handover", "set_session_state", "start_virtual_repair"],
+  "beforeModelCallbacks": [{
+    "pythonCode": "agents/Secondary_Lang_Support_Agent/before_model_callbacks/before_model_callbacks_01/python_code.py"
+  }]
+}

@@ -1,0 +1,13 @@
+{
+  "name": "0bcf9689-a18f-4757-92c8-2f7b193e0157",
+  "displayName": "Default Prompt Guardrail",
+  "action": {
+    "generativeAnswer": {
+      "prompt": "I apologize, but I cannot fulfill that request."
+    }
+  },
+  "llmPromptSecurity": {
+    "defaultSettings": {
+    }
+  }
+}

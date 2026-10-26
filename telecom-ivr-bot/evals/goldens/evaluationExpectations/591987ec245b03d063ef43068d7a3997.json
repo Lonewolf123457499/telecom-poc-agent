@@ -1,0 +1,6 @@
+{
+  "displayName": "591987ec245b03d063ef43068d7a3997",
+  "llmCriteria": {
+    "prompt": "The agent must reprompt on initial no-input events"
+  }
+}

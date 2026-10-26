@@ -1,0 +1,27 @@
+tests:
+- name: fetch_customer_profile_test_1
+  tool: fetch_customer_profile
+  expectations:
+    response:
+    - path: $.is_prepaid
+      operator: is_not_null
+    - path: $.billing_account
+      operator: is_not_null
+    - path: $.identification_status
+      operator: is_not_null
+    - path: $.customer_type
+      operator: is_not_null
+    - path: $.service_status
+      operator: is_not_null
+    - path: $.cirn
+      operator: is_not_null
+    - path: $.region
+      operator: is_not_null
+    - path: $.agent_action
+      operator: is_not_null
+    - path: $.business_flag
+      operator: is_not_null
+    - path: $.balance_owed
+      operator: is_not_null
+  args:
+    clid: '[clid]'

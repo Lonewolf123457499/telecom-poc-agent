@@ -1,0 +1,6 @@
+{
+  "displayName": "a81f73fb111cc9af80746e1cfd29edd4",
+  "llmCriteria": {
+    "prompt": "The agent must escalate to a live agent after three consecutive no-input events"
+  }
+}

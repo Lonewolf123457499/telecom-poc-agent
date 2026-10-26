@@ -1,0 +1,70 @@
+{
+  "name": "5840e9ef-9810-49fc-a4d3-08b576f94b76",
+  "displayName": "br_tv_013_fraud_escalation",
+  "tags": ["P0", "NO-GO", "fraud", "empathy", "BR-TV-013", "compliance_goldens"],
+  "golden": {
+    "turns": [{
+      "steps": [{
+        "userInput": {
+          "variables": {
+            "auth_status": "",
+            "clid": "5556667788",
+            "language": "primary",
+            "mock_mode": "True",
+            "tfn": "8005550199"
+          }
+        }
+      }, {
+        "userInput": {
+          "text": "\u003cevent\u003ewelcome\u003c/event\u003e"
+        }
+      }, {
+        "expectation": {
+          "agentResponse": {
+            "role": "agent",
+            "chunks": [{
+              "text": "Welcome to Telco. I can help with billing, technical support, or managing your account. To get started, could you tell me the phone number or account number associated with your service? This call may be recorded for quality and training purposes."
+            }]
+          }
+        }
+      }]
+    }, {
+      "steps": [{
+        "userInput": {
+          "text": "Someone used my account without authorization! This is fraud!"
+        }
+      }, {
+        "expectation": {
+          "agentResponse": {
+            "role": "agent",
+            "chunks": [{
+              "text": "I\u0027m very sorry to hear that you are facing challenges. I will ensure we handle your request with the utmost care."
+            }]
+          }
+        }
+      }, {
+        "expectation": {
+          "toolCall": {
+            "id": "adk-c42b52ed-a4b3-463a-aab9-88f9ac7527fb",
+            "tool": "execute_live_agent_handover",
+            "args": {
+              "reason": "fraud_escalation"
+            },
+            "displayName": "execute_live_agent_handover"
+          }
+        }
+      }, {
+        "expectation": {
+          "toolCall": {
+            "id": "adk-39137340-a7cb-47c7-96fb-184cd8c63887",
+            "tool": "end_session",
+            "args": {
+              "session_escalated": true
+            }
+          }
+        }
+      }]
+    }],
+    "evaluationExpectations": ["eval_exp_33a1b448", "eval_exp_53aea3e5"]
+  }
+}

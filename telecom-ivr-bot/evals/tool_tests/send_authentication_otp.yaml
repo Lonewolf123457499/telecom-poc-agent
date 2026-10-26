@@ -1,0 +1,15 @@
+tests:
+- name: send_authentication_otp_test_1
+  tool: send_authentication_otp
+  expectations:
+    response:
+    - path: $.sent
+      operator: is_not_null
+    - path: $.message
+      operator: is_not_null
+    - path: $.agent_action
+      operator: is_not_null
+    - path: $.expires_in_sec
+      operator: is_not_null
+  args:
+    clid: '[clid]'

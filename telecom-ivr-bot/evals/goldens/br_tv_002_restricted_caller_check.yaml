@@ -1,0 +1,26 @@
+conversations:
+- conversation: br_tv_002_restricted_caller_check
+  turns:
+  - user: <event>welcome</event>
+    agent: We are unable to process calls from this number at this time. Goodbye.
+    tool_calls:
+    - action: end_session
+      args:
+        reason: restricted_caller
+        session_escalated: false
+  expectations:
+  - The agent must play deflection and disconnect for blocked caller IDs
+  - The agent must not allow blocked callers to reach self-service
+  mocks: []
+  tags:
+  - P0
+  - NO-GO
+  - security
+  - blocklist
+  - BR-TV-002
+  - compliance_goldens
+  session_parameters:
+    language: primary
+    mock_mode: 'True'
+    clid: '0000000000'
+    tfn: '8005550199'

@@ -1,0 +1,19 @@
+tests:
+- name: execute_suspend_restore_test_1
+  tool: execute_suspend_restore
+  expectations:
+    response:
+    - path: $.status
+      operator: is_not_null
+    - path: $.agent_action
+      operator: is_not_null
+    - path: $.new_state
+      operator: is_not_null
+    - path: $.sms_confirmation_sent
+      operator: is_not_null
+    - path: $.effective_iso
+      operator: is_not_null
+  args:
+    cirn: '[cirn]'
+    action: '[action]'
+    reason: '[reason]'

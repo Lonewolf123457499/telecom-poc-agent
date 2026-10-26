@@ -1,0 +1,6 @@
+{
+  "displayName": "33a1b4482119a328d2342b49d296dfce",
+  "llmCriteria": {
+    "prompt": "The agent must emit verbatim empathy_protocol line immediately"
+  }
+}

@@ -1,0 +1,20 @@
+tests:
+- name: commit_appointment_reschedule_test_1
+  tool: commit_appointment_reschedule
+  expectations:
+    response:
+    - path: $.new_date
+      operator: is_not_null
+    - path: $.sms_sent
+      operator: is_not_null
+    - path: $.status
+      operator: is_not_null
+    - path: $.agent_action
+      operator: is_not_null
+    - path: $.appt_id
+      operator: is_not_null
+    - path: $.confirmed
+      operator: is_not_null
+  args:
+    appt_id: '[appt_id]'
+    new_slot: '[new_slot]'

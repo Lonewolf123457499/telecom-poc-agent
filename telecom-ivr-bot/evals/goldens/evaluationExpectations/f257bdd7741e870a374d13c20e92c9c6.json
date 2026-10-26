@@ -1,0 +1,6 @@
+{
+  "displayName": "f257bdd7741e870a374d13c20e92c9c6",
+  "llmCriteria": {
+    "prompt": "The agent must attempt disambiguation on unrecognized input"
+  }
+}

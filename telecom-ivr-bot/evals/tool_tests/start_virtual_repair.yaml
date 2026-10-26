@@ -1,0 +1,23 @@
+tests:
+- name: start_virtual_repair_test_1
+  tool: start_virtual_repair
+  expectations:
+    response:
+    - path: $.requires_sms
+      operator: is_not_null
+    - path: $.status
+      operator: is_not_null
+    - path: $.agent_action
+      operator: is_not_null
+    - path: $.first_diagnostic_question
+      operator: is_not_null
+    - path: $.symptom
+      operator: is_not_null
+    - path: $.session_id
+      operator: is_not_null
+    - path: $.step_count
+      operator: is_not_null
+  args:
+    cirn: '[cirn]'
+    lob: '[lob]'
+    symptom: '[symptom]'

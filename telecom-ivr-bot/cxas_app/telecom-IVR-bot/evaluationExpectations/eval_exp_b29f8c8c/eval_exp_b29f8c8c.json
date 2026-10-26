@@ -1,0 +1,7 @@
+{
+  "name": "5078ff02-f29d-4a0f-b978-6d289b9055df",
+  "displayName": "eval_exp_b29f8c8c",
+  "llmCriteria": {
+    "prompt": "The agent must escalate after three consecutive no-match disambiguation failures"
+  }
+}

@@ -1,0 +1,44 @@
+{
+  "name": "1630a0bd-3f4e-47f7-8ca3-23b09d863471",
+  "displayName": "br_tv_002_restricted_caller_check",
+  "tags": ["P0", "NO-GO", "security", "blocklist", "BR-TV-002", "compliance_goldens"],
+  "golden": {
+    "turns": [{
+      "steps": [{
+        "userInput": {
+          "variables": {
+            "clid": "0000000000",
+            "language": "primary",
+            "mock_mode": "True",
+            "tfn": "8005550199"
+          }
+        }
+      }, {
+        "userInput": {
+          "text": "\u003cevent\u003ewelcome\u003c/event\u003e"
+        }
+      }, {
+        "expectation": {
+          "agentResponse": {
+            "role": "agent",
+            "chunks": [{
+              "text": "We are unable to process calls from this number at this time. Goodbye."
+            }]
+          }
+        }
+      }, {
+        "expectation": {
+          "toolCall": {
+            "id": "adk-61b938c1-60b5-4793-b145-6bc6a9b81acc",
+            "tool": "end_session",
+            "args": {
+              "reason": "restricted_caller",
+              "session_escalated": false
+            }
+          }
+        }
+      }]
+    }],
+    "evaluationExpectations": ["eval_exp_b7e06c3c", "eval_exp_03eb4d37"]
+  }
+}

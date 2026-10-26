@@ -1,0 +1,7 @@
+{
+  "name": "1f09ca1e-0bfe-4a03-af83-71cbbd471ede",
+  "displayName": "eval_exp_591987ec",
+  "llmCriteria": {
+    "prompt": "The agent must reprompt on initial no-input events"
+  }
+}

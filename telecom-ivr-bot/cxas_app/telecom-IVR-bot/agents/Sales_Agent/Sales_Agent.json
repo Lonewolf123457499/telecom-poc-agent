@@ -1,0 +1,9 @@
+{
+  "name": "Sales_Agent",
+  "displayName": "Sales_Agent",
+  "instruction": "agents/Sales_Agent/instruction.txt",
+  "tools": ["end_session", "execute_live_agent_handover", "fetch_plan_catalog", "set_session_state"],
+  "beforeModelCallbacks": [{
+    "pythonCode": "agents/Sales_Agent/before_model_callbacks/before_model_callbacks_01/python_code.py"
+  }]
+}

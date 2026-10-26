@@ -1,0 +1,10 @@
+{
+  "name": "fetch_plan_catalog",
+  "pythonFunction": {
+    "name": "fetch_plan_catalog",
+    "pythonCode": "tools/fetch_plan_catalog/python_function/python_code.py",
+    "description": "Retrieves curated plan options (strictly 2-3 plans).\n\nArgs:\n    lob: Line of business.\n    customer_type: Existing or New customer.\n\nReturns:\n    dict: Curated plan choices."
+  },
+  "executionType": "SYNCHRONOUS",
+  "displayName": "fetch_plan_catalog"
+}

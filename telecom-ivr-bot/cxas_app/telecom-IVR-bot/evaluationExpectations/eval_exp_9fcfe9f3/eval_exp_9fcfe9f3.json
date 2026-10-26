@@ -1,0 +1,7 @@
+{
+  "name": "a309117c-186f-46aa-8ca2-ba208d511e5a",
+  "displayName": "eval_exp_9fcfe9f3",
+  "llmCriteria": {
+    "prompt": "The agent must repeat the verbatim recording notice when asked"
+  }
+}

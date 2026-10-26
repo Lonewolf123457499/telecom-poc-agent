@@ -1,0 +1,23 @@
+{
+  "name": "baeeb5ae-dcd1-4d26-8e53-a2a3bffcc70d",
+  "displayName": "greet",
+  "golden": {
+    "turns": [{
+      "steps": [{
+        "userInput": {
+          "text": "hi"
+        }
+      }, {
+        "expectation": {
+          "agentResponse": {
+            "role": "agent",
+            "chunks": [{
+              "text": "Hi there! I\u0027m a voice agent. How can I help you today?"
+            }]
+          },
+          "skipEvaluation": true
+        }
+      }]
+    }]
+  }
+}

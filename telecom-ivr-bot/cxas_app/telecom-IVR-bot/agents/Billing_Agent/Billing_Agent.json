@@ -1,0 +1,9 @@
+{
+  "name": "Billing_Agent",
+  "displayName": "Billing_Agent",
+  "instruction": "agents/Billing_Agent/instruction.txt",
+  "tools": ["create_dispute_ticket", "end_session", "execute_live_agent_handover", "fetch_recent_bills", "set_session_state"],
+  "beforeModelCallbacks": [{
+    "pythonCode": "agents/Billing_Agent/before_model_callbacks/before_model_callbacks_01/python_code.py"
+  }]
+}

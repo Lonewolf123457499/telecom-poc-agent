@@ -1,0 +1,275 @@
+name: Telecom IVR Bot CI
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'telecom-ivr-bot/**'
+      - '.github/workflows/ci.yaml'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'telecom-ivr-bot/**'
+      - '.github/workflows/ci.yaml'
+  workflow_dispatch:
+    inputs:
+      eval_runs:
+        description: 'Number of eval runs per golden/sim (default: 3)'
+        required: false
+        default: '3'
+      skip_sims:
+        description: 'Skip simulation evals'
+        required: false
+        type: boolean
+        default: false
+      priority:
+        description: 'Sim priority filter (e.g., P0 or P0,P1)'
+        required: false
+        default: 'P0'
+
+env:
+  PYTHON_VERSION: '3.11'
+  PROJECT_DIR: telecom-ivr-bot
+  APP_DIR: telecom-ivr-bot/cxas_app/telecom-IVR-bot
+  SCRIPTS_DIR: .agents/skills/cxas-agent-foundry/scripts
+  GECX_PROJECT: telecom-ivr-bot
+
+jobs:
+  # ──────────────────────────────────────────────
+  # Stage 1: Lint — fast, no GCP auth needed
+  # ──────────────────────────────────────────────
+  lint:
+    name: Lint (structural validation)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v4
+
+      - name: Install cxas-scrapi
+        run: |
+          uv venv .venv
+          source .venv/bin/activate
+          uv pip install -e cxas-scrapi/ 2>/dev/null || echo "cxas-scrapi not local, skipping editable install"
+          uv pip install rich
+
+      - name: Run cxas lint
+        run: |
+          source .venv/bin/activate
+          cxas lint --app-dir ${{ env.APP_DIR }}
+
+  # ──────────────────────────────────────────────
+  # Stage 2: Gate check — verifies deployed app
+  # ──────────────────────────────────────────────
+  gate-check:
+    name: Build verification gates
+    needs: lint
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v4
+
+      - name: Install cxas-scrapi
+        run: |
+          uv venv .venv
+          source .venv/bin/activate
+          uv pip install -e cxas-scrapi/ 2>/dev/null || echo "cxas-scrapi not local, skipping editable install"
+          uv pip install rich
+
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ secrets.GCP_SERVICE_ACCOUNT }}
+
+      - name: Run gate-check (skip push on PRs)
+        run: |
+          source .venv/bin/activate
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            python ${{ env.SCRIPTS_DIR }}/gate-check.py --skip-push --json
+          else
+            python ${{ env.SCRIPTS_DIR }}/gate-check.py --skip-push --json
+          fi
+
+      - name: Upload gate-check results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: gate-check-results
+          path: ${{ env.PROJECT_DIR }}/eval-reports/gate-check-*.json
+          retention-days: 30
+
+  # ──────────────────────────────────────────────
+  # Stage 3: Push app to platform (main only)
+  # ──────────────────────────────────────────────
+  push:
+    name: Push to platform
+    needs: gate-check
+    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v4
+
+      - name: Install cxas-scrapi
+        run: |
+          uv venv .venv
+          source .venv/bin/activate
+          uv pip install -e cxas-scrapi/ 2>/dev/null || echo "cxas-scrapi not local, skipping editable install"
+          uv pip install rich
+
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ secrets.GCP_SERVICE_ACCOUNT }}
+
+      - name: Read config and push
+        run: |
+          source .venv/bin/activate
+          PROJECT_ID=$(python -c "import json; c=json.load(open('${{ env.PROJECT_DIR }}/gecx-config.json')); print(c['gcp_project_id'])")
+          LOCATION=$(python -c "import json; c=json.load(open('${{ env.PROJECT_DIR }}/gecx-config.json')); print(c.get('location','us'))")
+          APP_ID=$(python -c "import json; c=json.load(open('${{ env.PROJECT_DIR }}/gecx-config.json')); print(c['deployed_app_id'])")
+
+          GOOGLE_CLOUD_PROJECT=$PROJECT_ID cxas push \
+            --app-dir ${{ env.APP_DIR }} \
+            --to "projects/$PROJECT_ID/locations/$LOCATION/apps/$APP_ID" \
+            --project-id "$PROJECT_ID" \
+            --location "$LOCATION"
+
+  # ──────────────────────────────────────────────
+  # Stage 4: Run evals — full suite
+  # ──────────────────────────────────────────────
+  evals:
+    name: Run evals
+    needs: push
+    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v4
+
+      - name: Install cxas-scrapi
+        run: |
+          uv venv .venv
+          source .venv/bin/activate
+          uv pip install -e cxas-scrapi/ 2>/dev/null || echo "cxas-scrapi not local, skipping editable install"
+          uv pip install rich
+
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ secrets.GCP_SERVICE_ACCOUNT }}
+
+      - name: Run all evals
+        run: |
+          source .venv/bin/activate
+          RUNS="${{ github.event.inputs.eval_runs || '3' }}"
+          PRIORITY="${{ github.event.inputs.priority || 'P0' }}"
+          SKIP_SIMS=""
+          if [ "${{ github.event.inputs.skip_sims }}" = "true" ]; then
+            SKIP_SIMS="--skip-sims"
+          fi
+
+          python ${{ env.SCRIPTS_DIR }}/run-evals.py \
+            --runs "$RUNS" \
+            --priority "$PRIORITY" \
+            $SKIP_SIMS
+
+      - name: Triage results
+        if: always()
+        run: |
+          source .venv/bin/activate
+          python ${{ env.SCRIPTS_DIR }}/triage-results.py || true
+
+      - name: Upload eval reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: eval-reports
+          path: ${{ env.PROJECT_DIR }}/eval-reports/
+          retention-days: 90
+
+  # ──────────────────────────────────────────────
+  # PR evals: tool tests + goldens (no push)
+  # ──────────────────────────────────────────────
+  pr-evals:
+    name: PR eval smoke test
+    needs: gate-check
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v4
+
+      - name: Install cxas-scrapi
+        run: |
+          uv venv .venv
+          source .venv/bin/activate
+          uv pip install -e cxas-scrapi/ 2>/dev/null || echo "cxas-scrapi not local, skipping editable install"
+          uv pip install rich
+
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ secrets.GCP_SERVICE_ACCOUNT }}
+
+      - name: Run goldens + tool tests (no push, no sims)
+        run: |
+          source .venv/bin/activate
+          python ${{ env.SCRIPTS_DIR }}/run-evals.py \
+            --runs 1 \
+            --skip-sims
+
+      - name: Upload PR eval reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pr-eval-reports
+          path: ${{ env.PROJECT_DIR }}/eval-reports/
+          retention-days: 14

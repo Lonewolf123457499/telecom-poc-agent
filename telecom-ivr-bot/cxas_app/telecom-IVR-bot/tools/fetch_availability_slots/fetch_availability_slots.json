@@ -1,0 +1,10 @@
+{
+  "name": "fetch_availability_slots",
+  "pythonFunction": {
+    "name": "fetch_availability_slots",
+    "pythonCode": "tools/fetch_availability_slots/python_function/python_code.py",
+    "description": "Finds open technician service windows.\n\nArgs:\n    zip_code: Service location postal code.\n    service_type: Installation or repair.\n\nReturns:\n    dict: Curated list of 2-3 available appointment slots."
+  },
+  "executionType": "SYNCHRONOUS",
+  "displayName": "fetch_availability_slots"
+}

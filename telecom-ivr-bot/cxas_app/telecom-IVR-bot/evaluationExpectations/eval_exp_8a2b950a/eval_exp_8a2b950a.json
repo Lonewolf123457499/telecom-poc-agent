@@ -1,0 +1,7 @@
+{
+  "name": "3e331c2d-a2a6-45b0-ad3a-fe59b1c6a82e",
+  "displayName": "eval_exp_8a2b950a",
+  "llmCriteria": {
+    "prompt": "The agent must call execute_live_agent_handover with reason no_input_escalation"
+  }
+}

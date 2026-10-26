@@ -1,0 +1,21 @@
+tests:
+- name: create_dispute_ticket_test_1
+  tool: create_dispute_ticket
+  expectations:
+    response:
+    - path: $.is_auto_credited
+      operator: is_not_null
+    - path: $.status
+      operator: is_not_null
+    - path: $.agent_action
+      operator: is_not_null
+    - path: $.adjusted_amount
+      operator: is_not_null
+    - path: $.eta_business_days
+      operator: is_not_null
+    - path: $.ticket_id
+      operator: is_not_null
+  args:
+    charge_id: '[charge_id]'
+    reason: '[reason]'
+    notes: '[notes]'

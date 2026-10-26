@@ -1,0 +1,7 @@
+{
+  "name": "52ab01a6-1481-4264-8e7e-d7bb2a1cee3b",
+  "displayName": "eval_exp_717b0203",
+  "llmCriteria": {
+    "prompt": "The agent must emit verbatim business_handoff line for business accounts"
+  }
+}

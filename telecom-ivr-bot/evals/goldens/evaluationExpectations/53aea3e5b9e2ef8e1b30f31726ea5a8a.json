@@ -1,0 +1,6 @@
+{
+  "displayName": "53aea3e5b9e2ef8e1b30f31726ea5a8a",
+  "llmCriteria": {
+    "prompt": "The agent must escalate without attempting authentication"
+  }
+}

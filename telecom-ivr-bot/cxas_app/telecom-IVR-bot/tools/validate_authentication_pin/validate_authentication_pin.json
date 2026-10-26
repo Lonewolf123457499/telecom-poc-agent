@@ -1,0 +1,10 @@
+{
+  "name": "validate_authentication_pin",
+  "pythonFunction": {
+    "name": "validate_authentication_pin",
+    "pythonCode": "tools/validate_authentication_pin/python_function/python_code.py",
+    "description": "Validates 4-digit PIN entered via DTMF keypad.\n\nArgs:\n    pin: 4-digit keypad PIN.\n\nReturns:\n    dict: Validation outcome and retry allowance."
+  },
+  "executionType": "SYNCHRONOUS",
+  "displayName": "validate_authentication_pin"
+}

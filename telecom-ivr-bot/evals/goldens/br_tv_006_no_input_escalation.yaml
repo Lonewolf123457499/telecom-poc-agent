@@ -1,0 +1,46 @@
+conversations:
+- conversation: br_tv_006_no_input_escalation
+  turns:
+  - user: <event>welcome</event>
+    agent: Welcome to Telco. I can help with billing, technical support, or managing
+      your account. To get started, could you tell me the phone number or account
+      number associated with your service? This call may be recorded for quality and
+      training purposes.
+  - user: <context>no user activity detected for 10 seconds.</context>
+    agent: I didn't hear anything. Welcome to Telco. I can help with billing, technical
+      support, or managing your account. To get started, could you tell me the phone
+      number or account number associated with your service? This call may be recorded
+      for quality and training purposes.
+  - user: <context>no user activity detected for 10 seconds.</context>
+    agent: I didn't hear anything. Welcome to Telco. I can help with billing, technical
+      support, or managing your account. To get started, could you tell me the phone
+      number or account number associated with your service? This call may be recorded
+      for quality and training purposes.
+  - user: <context>no user activity detected for 10 seconds.</context>
+    agent: I'll connect you to a representative who can help. Please hold.
+    tool_calls:
+    - action: execute_live_agent_handover
+      args:
+        reason: no_input_escalation
+    - action: end_session
+      args:
+        reason: no_input_escalation
+        session_escalated: true
+  expectations:
+  - The agent must reprompt on initial no-input events
+  - The agent must escalate to a live agent after three consecutive no-input events
+  - The agent must call execute_live_agent_handover with reason no_input_escalation
+  - The agent must emit verbatim live_agent_handoff line
+  mocks: []
+  tags:
+  - P0
+  - HIGH
+  - retry-strikes
+  - no-input
+  - BR-TV-006
+  - compliance_goldens
+  session_parameters:
+    language: primary
+    mock_mode: 'True'
+    clid: '5551234567'
+    tfn: '8005550199'

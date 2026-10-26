@@ -1,0 +1,7 @@
+{
+  "name": "06d58c40-2e0f-40a0-bca2-f6f702b8a255",
+  "displayName": "eval_exp_33a1b448",
+  "llmCriteria": {
+    "prompt": "The agent must emit verbatim empathy_protocol line immediately"
+  }
+}

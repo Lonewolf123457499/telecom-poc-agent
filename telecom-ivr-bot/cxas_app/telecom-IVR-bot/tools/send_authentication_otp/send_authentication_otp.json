@@ -1,0 +1,10 @@
+{
+  "name": "send_authentication_otp",
+  "pythonFunction": {
+    "name": "send_authentication_otp",
+    "pythonCode": "tools/send_authentication_otp/python_function/python_code.py",
+    "description": "Dispatches a 6-digit OTP code to the caller\u0027s mobile number.\n\nArgs:\n    clid: 10-digit telephone number.\n\nReturns:\n    dict: Dispatch status, validity window, and agent guidance."
+  },
+  "executionType": "SYNCHRONOUS",
+  "displayName": "send_authentication_otp"
+}

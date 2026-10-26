@@ -1,0 +1,10 @@
+{
+  "name": "create_dispute_ticket",
+  "pythonFunction": {
+    "name": "create_dispute_ticket",
+    "pythonCode": "tools/create_dispute_ticket/python_function/python_code.py",
+    "description": "Logs dispute or executes auto-credit for disputed charge.\n\nArgs:\n    charge_id: Disputed charge identifier.\n    reason: Justification reason.\n    notes: Context notes.\n\nReturns:\n    dict: Ticket ID, resolution timeline, or credit confirmation."
+  },
+  "executionType": "SYNCHRONOUS",
+  "displayName": "create_dispute_ticket"
+}

@@ -1,0 +1,10 @@
+{
+  "name": "commit_appointment_reschedule",
+  "pythonFunction": {
+    "name": "commit_appointment_reschedule",
+    "pythonCode": "tools/commit_appointment_reschedule/python_function/python_code.py",
+    "description": "Commits rescheduled technician appointment slot.\n\nArgs:\n    appt_id: Current appointment ID.\n    new_slot: Chosen new slot window.\n\nReturns:\n    dict: Confirmation status, scheduled date/time, and SMS dispatch status."
+  },
+  "executionType": "SYNCHRONOUS",
+  "displayName": "commit_appointment_reschedule"
+}

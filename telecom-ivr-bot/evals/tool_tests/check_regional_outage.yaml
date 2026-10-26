@@ -1,0 +1,16 @@
+tests:
+- name: check_regional_outage_test_1
+  tool: check_regional_outage
+  expectations:
+    response:
+    - path: $.active
+      operator: is_not_null
+    - path: $.message
+      operator: is_not_null
+    - path: $.restoration_eta_iso
+      operator: is_not_null
+    - path: $.agent_action
+      operator: is_not_null
+  args:
+    region: '[region]'
+    lob: '[lob]'

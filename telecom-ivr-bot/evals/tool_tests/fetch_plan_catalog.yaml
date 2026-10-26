@@ -1,0 +1,14 @@
+tests:
+- name: fetch_plan_catalog_test_1
+  tool: fetch_plan_catalog
+  expectations:
+    response:
+    - path: $.plans
+      operator: is_not_null
+    - path: $.agent_action
+      operator: is_not_null
+    - path: $.status
+      operator: is_not_null
+  args:
+    lob: '[lob]'
+    customer_type: '[customer_type]'

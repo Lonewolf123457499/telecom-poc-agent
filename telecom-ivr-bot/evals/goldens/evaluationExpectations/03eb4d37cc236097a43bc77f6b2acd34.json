@@ -1,0 +1,6 @@
+{
+  "displayName": "03eb4d37cc236097a43bc77f6b2acd34",
+  "llmCriteria": {
+    "prompt": "The agent must not allow blocked callers to reach self-service"
+  }
+}

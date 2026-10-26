@@ -1,0 +1,19 @@
+tests:
+- name: validate_authentication_otp_test_1
+  tool: validate_authentication_otp
+  expectations:
+    response:
+    - path: $.agent_action
+      operator: is_not_null
+    - path: $.auth_state
+      operator: is_not_null
+    - path: $.error
+      operator: is_not_null
+    - path: $.auth_status
+      operator: is_not_null
+    - path: $.message
+      operator: is_not_null
+    - path: $.attempts_remaining
+      operator: is_not_null
+  args:
+    code: '[code]'

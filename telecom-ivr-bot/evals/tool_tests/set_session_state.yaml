@@ -1,0 +1,16 @@
+tests:
+- name: set_session_state_test_1
+  tool: set_session_state
+  expectations:
+    response:
+    - path: $.success
+      operator: is_not_null
+    - path: $.agent_action
+      operator: is_not_null
+    - path: $.value
+      operator: is_not_null
+    - path: $.key
+      operator: is_not_null
+  args:
+    key: '[key]'
+    value: '[value]'

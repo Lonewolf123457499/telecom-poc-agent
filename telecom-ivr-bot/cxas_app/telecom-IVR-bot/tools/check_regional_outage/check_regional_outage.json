@@ -1,0 +1,10 @@
+{
+  "name": "check_regional_outage",
+  "pythonFunction": {
+    "name": "check_regional_outage",
+    "pythonCode": "tools/check_regional_outage/python_function/python_code.py",
+    "description": "Checks for active network or equipment outages.\n\nArgs:\n    region: Service territory code.\n    lob: Line of business.\n\nReturns:\n    dict: Outage status and restoration ETA."
+  },
+  "executionType": "SYNCHRONOUS",
+  "displayName": "check_regional_outage"
+}

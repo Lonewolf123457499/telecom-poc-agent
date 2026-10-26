@@ -1,0 +1,349 @@
+{
+  "name": "5eedf474-4d83-4978-94c6-b54da66749eb",
+  "displayName": "telecom-IVR-bot",
+  "description": "Telco Voice Central customer service voice agent resolving billing, tech support, sales, appointments, account management, and service changes.",
+  "rootAgent": "Telecom_Assistant",
+  "loggingSettings": {
+    "conversationLoggingSettings": {
+      "retentionWindow": "31536000s"
+    }
+  },
+  "modelSettings": {
+    "model": "gemini-3.1-flash-live"
+  },
+  "variableDeclarations": [{
+    "name": "_action_trigger",
+    "description": "Internal deterministic action trigger for callbacks",
+    "schema": {
+      "type": "STRING",
+      "default": ""
+    }
+  }, {
+    "name": "_just_authenticated",
+    "description": "Flag set when OTP or PIN validation passes to prevent re-greeting",
+    "schema": {
+      "type": "STRING",
+      "default": ""
+    }
+  }, {
+    "name": "_needs_auth",
+    "description": "Internal flag set when a specialist bounces an unauthenticated caller back to the root for authentication",
+    "schema": {
+      "type": "STRING",
+      "default": ""
+    }
+  }, {
+    "name": "_target_agent",
+    "description": "Queued target agent when stepping up to authentication",
+    "schema": {
+      "type": "STRING",
+      "default": ""
+    }
+  }, {
+    "name": "amount",
+    "description": "Active dollar amount for disputed charge or transaction",
+    "schema": {
+      "type": "STRING",
+      "default": "0.00"
+    }
+  }, {
+    "name": "api_resp",
+    "description": "Last raw API response payload for diagnostic tracing",
+    "schema": {
+      "type": "STRING",
+      "default": ""
+    }
+  }, {
+    "name": "auth_state",
+    "description": "Module M2 authentication state: Guest, Identified, or Authenticated",
+    "schema": {
+      "type": "STRING",
+      "default": "Guest"
+    }
+  }, {
+    "name": "auth_status",
+    "description": "Authentication status of caller: Pass or Fail (NEVER override in evals)",
+    "schema": {
+      "type": "STRING",
+      "default": ""
+    }
+  }, {
+    "name": "ban_type",
+    "description": "Billing account classification code",
+    "schema": {
+      "type": "STRING",
+      "default": "consumer"
+    }
+  }, {
+    "name": "billing_account",
+    "description": "Billing account identifier (PII, read back last-4 only)",
+    "schema": {
+      "type": "STRING",
+      "default": ""
+    }
+  }, {
+    "name": "business_flag",
+    "description": "Flag indicating if account is commercial business: true or false",
+    "schema": {
+      "type": "STRING",
+      "default": "false"
+    }
+  }, {
+    "name": "cirn",
+    "description": "Customer reference number (PII, read back last-4 only)",
+    "schema": {
+      "type": "STRING",
+      "default": ""
+    }
+  }, {
+    "name": "clid",
+    "description": "10-digit caller ID provided by telephony platform",
+    "schema": {
+      "type": "STRING",
+      "default": ""
+    }
+  }, {
+    "name": "customer_type",
+    "description": "Customer relationship type: New or Existing",
+    "schema": {
+      "type": "STRING",
+      "default": "Existing"
+    }
+  }, {
+    "name": "date_val",
+    "description": "Temporary date parameter for appointment booking",
+    "schema": {
+      "type": "STRING",
+      "default": ""
+    }
+  }, {
+    "name": "day_val",
+    "description": "Temporary day parameter for appointment booking",
+    "schema": {
+      "type": "STRING",
+      "default": ""
+    }
+  }, {
+    "name": "days",
+    "description": "Turnaround time in business days for statement credits",
+    "schema": {
+      "type": "STRING",
+      "default": "2"
+    }
+  }, {
+    "name": "dtmf_digits",
+    "description": "Keypad DTMF digits captured during current turn",
+    "schema": {
+      "type": "STRING",
+      "default": ""
+    }
+  }, {
+    "name": "end_time",
+    "description": "Temporary appointment time window end value",
+    "schema": {
+      "type": "STRING",
+      "default": ""
+    }
+  }, {
+    "name": "flag_val",
+    "description": "Temporary flag parameter for multi-turn flow control",
+    "schema": {
+      "type": "STRING",
+      "default": ""
+    }
+  }, {
+    "name": "global_err_count",
+    "description": "Cross-module cumulative hard error and validation retry count",
+    "schema": {
+      "type": "INTEGER",
+      "default": 0.0
+    }
+  }, {
+    "name": "identification_status",
+    "description": "Customer identification lookup status: Pass or Fail",
+    "schema": {
+      "type": "STRING",
+      "default": ""
+    }
+  }, {
+    "name": "intent_type",
+    "description": "Sub-intent classification tag",
+    "schema": {
+      "type": "STRING",
+      "default": ""
+    }
+  }, {
+    "name": "is_prepaid",
+    "description": "Prepaid wireless account indicator: true or false",
+    "schema": {
+      "type": "STRING",
+      "default": "false"
+    }
+  }, {
+    "name": "item_list",
+    "description": "List of equipment items or line item charges under review",
+    "schema": {
+      "type": "STRING",
+      "default": ""
+    }
+  }, {
+    "name": "language",
+    "description": "Session locked caller language: primary or secondary",
+    "schema": {
+      "type": "STRING",
+      "default": "primary"
+    }
+  }, {
+    "name": "last_pmt_amt",
+    "description": "Last recorded payment transaction dollar amount",
+    "schema": {
+      "type": "STRING",
+      "default": "0.00"
+    }
+  }, {
+    "name": "lob",
+    "description": "Line of business: mobility, internet, tv, homephone, smarthome",
+    "schema": {
+      "type": "STRING",
+      "default": ""
+    }
+  }, {
+    "name": "local_noinput_counter",
+    "description": "Consecutive silence/no-input count on current capability module",
+    "schema": {
+      "type": "INTEGER",
+      "default": 0.0
+    }
+  }, {
+    "name": "loyalty_limit",
+    "description": "Maximum courtesy credit dollar limit for customer",
+    "schema": {
+      "type": "INTEGER",
+      "default": 25.0
+    }
+  }, {
+    "name": "misc_counter",
+    "description": "Generic iteration counter for conversation subtasks",
+    "schema": {
+      "type": "INTEGER",
+      "default": 0.0
+    }
+  }, {
+    "name": "mock_mode",
+    "description": "Evaluation harness simulation mode flag (True returns synthetic success)",
+    "schema": {
+      "type": "STRING",
+      "default": "False"
+    }
+  }, {
+    "name": "month_val",
+    "description": "Temporary month parameter for appointment booking",
+    "schema": {
+      "type": "STRING",
+      "default": ""
+    }
+  }, {
+    "name": "no_match_confirmation_count",
+    "description": "Disambiguation clarification retry attempts counter",
+    "schema": {
+      "type": "INTEGER",
+      "default": 0.0
+    }
+  }, {
+    "name": "otp_fail_count",
+    "description": "Counter for consecutive failed OTP/PIN attempts in Module M2 (escalates at 3)",
+    "schema": {
+      "type": "NUMBER",
+      "default": 0.0
+    }
+  }, {
+    "name": "region",
+    "description": "Service territory region: Region-A, Region-B, Region-C",
+    "schema": {
+      "type": "STRING",
+      "default": "Region-A"
+    }
+  }, {
+    "name": "route",
+    "description": "Active target capability module routing decision",
+    "schema": {
+      "type": "STRING",
+      "default": ""
+    }
+  }, {
+    "name": "sms_content",
+    "description": "Outbound SMS body content dispatched to caller",
+    "schema": {
+      "type": "STRING",
+      "default": ""
+    }
+  }, {
+    "name": "sms_type",
+    "description": "SMS payload type category: Public or Private",
+    "schema": {
+      "type": "STRING",
+      "default": "Public"
+    }
+  }, {
+    "name": "tfn",
+    "description": "Toll-free number dialed for brand and queue routing",
+    "schema": {
+      "type": "STRING",
+      "default": ""
+    }
+  }, {
+    "name": "ticket_state",
+    "description": "Current status of support ticket: open, in-progress, closed",
+    "schema": {
+      "type": "STRING",
+      "default": ""
+    }
+  }, {
+    "name": "tv_sub_type",
+    "description": "TV delivery technology: streaming, satellite, streaming_only",
+    "schema": {
+      "type": "STRING",
+      "default": ""
+    }
+  }, {
+    "name": "user_id",
+    "description": "Internal CRM record identifier for customer",
+    "schema": {
+      "type": "STRING",
+      "default": ""
+    }
+  }, {
+    "name": "utterance",
+    "description": "Latest captured caller intent utterance",
+    "schema": {
+      "type": "STRING",
+      "default": ""
+    }
+  }, {
+    "name": "vr_task_count",
+    "description": "Virtual repair diagnostic question iteration counter",
+    "schema": {
+      "type": "INTEGER",
+      "default": 0.0
+    }
+  }],
+  "languageSettings": {
+    "defaultLanguageCode": "en-US"
+  },
+  "evaluationMetricsThresholds": {
+    "goldenEvaluationMetricsThresholds": {
+      "turnLevelMetricsThresholds": {
+        "semanticSimilaritySuccessThreshold": 3,
+        "overallToolInvocationCorrectnessThreshold": 1.0
+      },
+      "toolMatchingSettings": {
+        "extraToolCallBehavior": "ALLOW"
+      }
+    },
+    "goldenHallucinationMetricBehavior": "DISABLED"
+  },
+  "timeZoneSettings": {
+    "timeZone": "America/New_York"
+  },
+  "toolExecutionMode": "PARALLEL"
+}

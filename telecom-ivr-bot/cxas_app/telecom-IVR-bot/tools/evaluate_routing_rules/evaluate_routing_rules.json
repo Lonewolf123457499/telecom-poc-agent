@@ -1,0 +1,10 @@
+{
+  "name": "evaluate_routing_rules",
+  "pythonFunction": {
+    "name": "evaluate_routing_rules",
+    "pythonCode": "tools/evaluate_routing_rules/python_function/python_code.py",
+    "description": "Classifies user utterance into target module route and auth level.\n\nArgs:\n    utterance: Raw or processed caller text.\n\nReturns:\n    dict: Target route module, confidence score, and auth requirement."
+  },
+  "executionType": "SYNCHRONOUS",
+  "displayName": "evaluate_routing_rules"
+}

@@ -1,0 +1,100 @@
+{
+  "name": "5c955cf1-7dc1-466b-92b9-65c5cb57f67e",
+  "displayName": "br_tv_006_no_match_escalation",
+  "tags": ["P0", "HIGH", "retry-strikes", "no-match", "disambiguation", "BR-TV-006", "compliance_goldens"],
+  "golden": {
+    "turns": [{
+      "steps": [{
+        "userInput": {
+          "variables": {
+            "clid": "5551234567",
+            "language": "primary",
+            "mock_mode": "True",
+            "tfn": "8005550199"
+          }
+        }
+      }, {
+        "userInput": {
+          "text": "\u003cevent\u003ewelcome\u003c/event\u003e"
+        }
+      }, {
+        "expectation": {
+          "agentResponse": {
+            "role": "agent",
+            "chunks": [{
+              "text": "Welcome to Telco. I can help with billing, technical support, or managing your account. To get started, could you tell me the phone number or account number associated with your service? This call may be recorded for quality and training purposes."
+            }]
+          }
+        }
+      }]
+    }, {
+      "steps": [{
+        "userInput": {
+          "text": "banana pancake spaceship"
+        }
+      }, {
+        "expectation": {
+          "agentResponse": {
+            "role": "agent",
+            "chunks": [{
+              "text": "I didn\u0027t quite understand that. I can help with billing, technical support, or managing your account. How can I help you today?"
+            }]
+          }
+        }
+      }]
+    }, {
+      "steps": [{
+        "userInput": {
+          "text": "qux flim flam blorp"
+        }
+      }, {
+        "expectation": {
+          "agentResponse": {
+            "role": "agent",
+            "chunks": [{
+              "text": "I\u0027m sorry, I still didn\u0027t understand. Could you please specify whether you need help with billing, technical support, or managing your account?"
+            }]
+          }
+        }
+      }]
+    }, {
+      "steps": [{
+        "userInput": {
+          "text": "xyzzy quantum waffle"
+        }
+      }, {
+        "expectation": {
+          "agentResponse": {
+            "role": "agent",
+            "chunks": [{
+              "text": "I\u0027ll connect you to a representative who can help. Please hold."
+            }]
+          }
+        }
+      }, {
+        "expectation": {
+          "toolCall": {
+            "id": "adk-a2fab180-20aa-4eb4-ba15-b4b83970ac60",
+            "tool": "execute_live_agent_handover",
+            "args": {
+              "reason": "disambig_max_attempts"
+            },
+            "displayName": "execute_live_agent_handover"
+          }
+        }
+      }, {
+        "expectation": {
+          "toolCall": {
+            "id": "adk-6f9b1be0-7c61-40dd-a764-ec0f6cfc19e5",
+            "tool": "end_session",
+            "args": {
+              "reason": "disambig_max_attempts",
+              "session_escalated": true
+            }
+          }
+        }
+      }]
+    }],
+    "evaluationExpectations": ["eval_exp_f257bdd7", "eval_exp_b29f8c8c", "eval_exp_ca725fee", "eval_exp_6d32f8a4"]
+  }
+}

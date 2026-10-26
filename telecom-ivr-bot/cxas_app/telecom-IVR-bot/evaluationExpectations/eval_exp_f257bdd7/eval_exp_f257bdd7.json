@@ -1,0 +1,7 @@
+{
+  "name": "66964241-2b27-4325-aeb8-d4561b919aee",
+  "displayName": "eval_exp_f257bdd7",
+  "llmCriteria": {
+    "prompt": "The agent must attempt disambiguation on unrecognized input"
+  }
+}

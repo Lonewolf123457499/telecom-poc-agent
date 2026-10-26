@@ -1,0 +1,10 @@
+{
+  "name": "validate_authentication_otp",
+  "pythonFunction": {
+    "name": "validate_authentication_otp",
+    "pythonCode": "tools/validate_authentication_otp/python_function/python_code.py",
+    "description": "Validates the customer-provided OTP code.\n\nArgs:\n    code: 6-digit OTP passcode string.\n\nReturns:\n    dict: Authentication result and remaining retry count."
+  },
+  "executionType": "SYNCHRONOUS",
+  "displayName": "validate_authentication_otp"
+}

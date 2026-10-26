@@ -1,0 +1,6 @@
+{
+  "displayName": "0c72d0b0d40e0b2bb1b003b75563f8ea",
+  "llmCriteria": {
+    "prompt": "The agent must escalate immediately without attempting self-service"
+  }
+}

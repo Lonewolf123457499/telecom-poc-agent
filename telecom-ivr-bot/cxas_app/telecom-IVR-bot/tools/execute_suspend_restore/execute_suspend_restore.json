@@ -1,0 +1,10 @@
+{
+  "name": "execute_suspend_restore",
+  "pythonFunction": {
+    "name": "execute_suspend_restore",
+    "pythonCode": "tools/execute_suspend_restore/python_function/python_code.py",
+    "description": "Executes account state transition for suspension or restoration.\n\nArgs:\n    cirn: Customer reference number.\n    action: \"suspend\" or \"restore\".\n    reason: Justification reason.\n\nReturns:\n    dict: New service state, timestamp, and confirmation."
+  },
+  "executionType": "SYNCHRONOUS",
+  "displayName": "execute_suspend_restore"
+}

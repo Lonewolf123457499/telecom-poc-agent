@@ -1,0 +1,9 @@
+{
+  "name": "Account_Agent",
+  "displayName": "Account_Agent",
+  "instruction": "agents/Account_Agent/instruction.txt",
+  "tools": ["end_session", "execute_live_agent_handover", "execute_suspend_restore", "send_password_reset_sms", "set_session_state"],
+  "beforeModelCallbacks": [{
+    "pythonCode": "agents/Account_Agent/before_model_callbacks/before_model_callbacks_01/python_code.py"
+  }]
+}

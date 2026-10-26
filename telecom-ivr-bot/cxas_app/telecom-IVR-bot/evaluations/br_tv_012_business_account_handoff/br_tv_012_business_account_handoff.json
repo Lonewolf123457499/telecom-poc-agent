@@ -1,0 +1,70 @@
+{
+  "name": "960c98e6-22c0-4e51-8788-20c6a41302b3",
+  "displayName": "br_tv_012_business_account_handoff",
+  "tags": ["P0", "HIGH", "business-deflection", "BR-TV-012", "compliance_goldens"],
+  "golden": {
+    "turns": [{
+      "steps": [{
+        "userInput": {
+          "variables": {
+            "business_flag": "true",
+            "clid": "5559876543",
+            "language": "primary",
+            "mock_mode": "True",
+            "tfn": "8005550199"
+          }
+        }
+      }, {
+        "userInput": {
+          "text": "\u003cevent\u003ewelcome\u003c/event\u003e"
+        }
+      }, {
+        "expectation": {
+          "agentResponse": {
+            "role": "agent",
+            "chunks": [{
+              "text": "Welcome to Telco. I can help with billing, technical support, or managing your account. To get started, could you tell me the phone number or account number associated with your service? This call may be recorded for quality and training purposes."
+            }]
+          }
+        }
+      }]
+    }, {
+      "steps": [{
+        "userInput": {
+          "text": "I want to add a new business phone line."
+        }
+      }, {
+        "expectation": {
+          "agentResponse": {
+            "role": "agent",
+            "chunks": [{
+              "text": "To get you the best support for your business account, I\u0027ll transfer you to an agent. You\u0027ll need to use your phone keypad instead of talking to the virtual assistant. Just a moment while I connect you."
+            }]
+          }
+        }
+      }, {
+        "expectation": {
+          "toolCall": {
+            "id": "adk-3aa9a7e9-25c0-42d0-bbea-d9b8773faac1",
+            "tool": "execute_live_agent_handover",
+            "args": {
+              "reason": "business_handoff"
+            },
+            "displayName": "execute_live_agent_handover"
+          }
+        }
+      }, {
+        "expectation": {
+          "toolCall": {
+            "id": "adk-1cf926fb-3d72-459f-831b-cb1d5d485cad",
+            "tool": "end_session",
+            "args": {
+              "session_escalated": true
+            }
+          }
+        }
+      }]
+    }],
+    "evaluationExpectations": ["eval_exp_717b0203", "eval_exp_0c72d0b0"]
+  }
+}

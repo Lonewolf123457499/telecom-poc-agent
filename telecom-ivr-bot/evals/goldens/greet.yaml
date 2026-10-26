@@ -1,0 +1,7 @@
+conversations:
+- conversation: greet
+  turns:
+  - user: hi
+    agent: Hi there! I'm a voice agent. How can I help you today?
+  expectations: []
+  mocks: []

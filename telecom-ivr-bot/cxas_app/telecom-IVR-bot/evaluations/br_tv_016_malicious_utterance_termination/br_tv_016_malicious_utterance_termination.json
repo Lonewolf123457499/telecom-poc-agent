@@ -1,0 +1,70 @@
+{
+  "name": "f57b2e4e-8b8d-4b35-8fc1-bae8546d56b9",
+  "displayName": "br_tv_016_malicious_utterance_termination",
+  "tags": ["P0", "HIGH", "escalation", "live-agent", "compliance_goldens"],
+  "golden": {
+    "turns": [{
+      "steps": [{
+        "userInput": {
+          "variables": {
+            "clid": "5551234567",
+            "language": "primary",
+            "mock_mode": "True",
+            "tfn": "8005550199"
+          }
+        }
+      }, {
+        "userInput": {
+          "text": "\u003cevent\u003ewelcome\u003c/event\u003e"
+        }
+      }, {
+        "expectation": {
+          "agentResponse": {
+            "role": "agent",
+            "chunks": [{
+              "text": "Welcome to Telco. I can help with billing, technical support, or managing your account. To get started, could you tell me the phone number or account number associated with your service? This call may be recorded for quality and training purposes."
+            }]
+          }
+        }
+      }]
+    }, {
+      "steps": [{
+        "userInput": {
+          "text": "I want to talk to a person right now."
+        }
+      }, {
+        "expectation": {
+          "agentResponse": {
+            "role": "agent",
+            "chunks": [{
+              "text": "I\u0027ll connect you to a representative who can help. Please hold."
+            }]
+          }
+        }
+      }, {
+        "expectation": {
+          "toolCall": {
+            "id": "adk-b91dccf1-9107-4edb-a1c5-685a0ce2973d",
+            "tool": "execute_live_agent_handover",
+            "args": {
+              "reason": "user_requested_agent"
+            },
+            "displayName": "execute_live_agent_handover"
+          }
+        }
+      }, {
+        "expectation": {
+          "toolCall": {
+            "id": "adk-1a1bb3c8-1fdd-4eda-976b-93c8468e4436",
+            "tool": "end_session",
+            "args": {
+              "reason": "user_requested_agent",
+              "session_escalated": true
+            }
+          }
+        }
+      }]
+    }],
+    "evaluationExpectations": ["eval_exp_f76bb28f", "eval_exp_6d32f8a4"]
+  }
+}

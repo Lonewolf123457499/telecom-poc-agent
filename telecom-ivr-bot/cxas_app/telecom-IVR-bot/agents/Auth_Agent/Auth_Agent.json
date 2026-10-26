@@ -1,0 +1,9 @@
+{
+  "name": "Auth_Agent",
+  "displayName": "Auth_Agent",
+  "instruction": "agents/Auth_Agent/instruction.txt",
+  "tools": ["end_session", "execute_live_agent_handover", "send_authentication_otp", "set_session_state", "validate_authentication_otp", "validate_authentication_pin"],
+  "beforeModelCallbacks": [{
+    "pythonCode": "agents/Auth_Agent/before_model_callbacks/before_model_callbacks_01/python_code.py"
+  }]
+}

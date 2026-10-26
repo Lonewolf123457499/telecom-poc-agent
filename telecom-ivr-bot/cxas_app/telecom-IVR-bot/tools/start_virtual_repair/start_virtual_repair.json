@@ -1,0 +1,10 @@
+{
+  "name": "start_virtual_repair",
+  "pythonFunction": {
+    "name": "start_virtual_repair",
+    "pythonCode": "tools/start_virtual_repair/python_function/python_code.py",
+    "description": "Starts diagnostic virtual repair workflow.\n\nArgs:\n    cirn: Customer reference number.\n    lob: Line of business.\n    symptom: Reported technical issue symptom.\n\nReturns:\n    dict: Session token, diagnostic query, and recommended troubleshooting steps."
+  },
+  "executionType": "SYNCHRONOUS",
+  "displayName": "start_virtual_repair"
+}
