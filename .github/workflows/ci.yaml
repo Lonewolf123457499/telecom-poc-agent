@@ -51,17 +51,15 @@ jobs:
       - name: Install uv
         uses: astral-sh/setup-uv@v4
 
-      - name: Install cxas-scrapi
+      - name: Install dependencies
         run: |
           uv venv .venv
-          source .venv/bin/activate
-          uv pip install -e cxas-scrapi/ 2>/dev/null || echo "cxas-scrapi not local, skipping editable install"
-          uv pip install rich
+          . .venv/bin/activate
+          uv pip install cxas-scrapi rich
+          echo "$GITHUB_WORKSPACE/.venv/bin" >> "$GITHUB_PATH"
 
       - name: Run cxas lint
-        run: |
-          source .venv/bin/activate
-          cxas lint --app-dir ${{ env.APP_DIR }}
+        run: cxas lint --app-dir ${{ env.APP_DIR }}
 
   # ──────────────────────────────────────────────
   # Stage 2: Gate check — verifies deployed app
@@ -83,12 +81,12 @@ jobs:
       - name: Install uv
         uses: astral-sh/setup-uv@v4
 
-      - name: Install cxas-scrapi
+      - name: Install dependencies
         run: |
           uv venv .venv
-          source .venv/bin/activate
-          uv pip install -e cxas-scrapi/ 2>/dev/null || echo "cxas-scrapi not local, skipping editable install"
-          uv pip install rich
+          . .venv/bin/activate
+          uv pip install cxas-scrapi rich
+          echo "$GITHUB_WORKSPACE/.venv/bin" >> "$GITHUB_PATH"
 
       - name: Authenticate to Google Cloud
         uses: google-github-actions/auth@v2
@@ -96,14 +94,8 @@ jobs:
           workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
           service_account: ${{ secrets.GCP_SERVICE_ACCOUNT }}
 
-      - name: Run gate-check (skip push on PRs)
-        run: |
-          source .venv/bin/activate
-          if [ "${{ github.event_name }}" = "pull_request" ]; then
-            python ${{ env.SCRIPTS_DIR }}/gate-check.py --skip-push --json
-          else
-            python ${{ env.SCRIPTS_DIR }}/gate-check.py --skip-push --json
-          fi
+      - name: Run gate-check (read-only)
+        run: python ${{ env.SCRIPTS_DIR }}/gate-check.py --skip-push --json
 
       - name: Upload gate-check results
         if: always()
@@ -134,12 +126,12 @@ jobs:
       - name: Install uv
         uses: astral-sh/setup-uv@v4
 
-      - name: Install cxas-scrapi
+      - name: Install dependencies
         run: |
           uv venv .venv
-          source .venv/bin/activate
-          uv pip install -e cxas-scrapi/ 2>/dev/null || echo "cxas-scrapi not local, skipping editable install"
-          uv pip install rich
+          . .venv/bin/activate
+          uv pip install cxas-scrapi rich
+          echo "$GITHUB_WORKSPACE/.venv/bin" >> "$GITHUB_PATH"
 
       - name: Authenticate to Google Cloud
         uses: google-github-actions/auth@v2
@@ -149,7 +141,6 @@ jobs:
 
       - name: Read config and push
         run: |
-          source .venv/bin/activate
           PROJECT_ID=$(python -c "import json; c=json.load(open('${{ env.PROJECT_DIR }}/gecx-config.json')); print(c['gcp_project_id'])")
           LOCATION=$(python -c "import json; c=json.load(open('${{ env.PROJECT_DIR }}/gecx-config.json')); print(c.get('location','us'))")
           APP_ID=$(python -c "import json; c=json.load(open('${{ env.PROJECT_DIR }}/gecx-config.json')); print(c['deployed_app_id'])")
@@ -182,12 +173,12 @@ jobs:
       - name: Install uv
         uses: astral-sh/setup-uv@v4
 
-      - name: Install cxas-scrapi
+      - name: Install dependencies
         run: |
           uv venv .venv
-          source .venv/bin/activate
-          uv pip install -e cxas-scrapi/ 2>/dev/null || echo "cxas-scrapi not local, skipping editable install"
-          uv pip install rich
+          . .venv/bin/activate
+          uv pip install cxas-scrapi rich
+          echo "$GITHUB_WORKSPACE/.venv/bin" >> "$GITHUB_PATH"
 
       - name: Authenticate to Google Cloud
         uses: google-github-actions/auth@v2
@@ -197,7 +188,6 @@ jobs:
 
       - name: Run all evals
         run: |
-          source .venv/bin/activate
           RUNS="${{ github.event.inputs.eval_runs || '3' }}"
           PRIORITY="${{ github.event.inputs.priority || 'P0' }}"
           SKIP_SIMS=""
@@ -212,9 +202,7 @@ jobs:
 
       - name: Triage results
         if: always()
-        run: |
-          source .venv/bin/activate
-          python ${{ env.SCRIPTS_DIR }}/triage-results.py || true
+        run: python ${{ env.SCRIPTS_DIR }}/triage-results.py || true
 
       - name: Upload eval reports
         if: always()
@@ -246,12 +234,12 @@ jobs:
       - name: Install uv
         uses: astral-sh/setup-uv@v4
 
-      - name: Install cxas-scrapi
+      - name: Install dependencies
         run: |
           uv venv .venv
-          source .venv/bin/activate
-          uv pip install -e cxas-scrapi/ 2>/dev/null || echo "cxas-scrapi not local, skipping editable install"
-          uv pip install rich
+          . .venv/bin/activate
+          uv pip install cxas-scrapi rich
+          echo "$GITHUB_WORKSPACE/.venv/bin" >> "$GITHUB_PATH"
 
       - name: Authenticate to Google Cloud
         uses: google-github-actions/auth@v2
@@ -261,7 +249,6 @@ jobs:
 
       - name: Run goldens + tool tests (no push, no sims)
         run: |
-          source .venv/bin/activate
           python ${{ env.SCRIPTS_DIR }}/run-evals.py \
             --runs 1 \
             --skip-sims
