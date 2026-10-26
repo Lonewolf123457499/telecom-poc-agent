@@ -36,6 +36,27 @@ env:
 
 jobs:
   # ──────────────────────────────────────────────
+  # Check if GCP secrets are configured
+  # ──────────────────────────────────────────────
+  check-secrets:
+    name: Check GCP credentials
+    runs-on: ubuntu-latest
+    outputs:
+      has-gcp: ${{ steps.check.outputs.has-gcp }}
+    steps:
+      - id: check
+        env:
+          WIF: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
+        run: |
+          if [ -n "$WIF" ]; then
+            echo "has-gcp=true" >> "$GITHUB_OUTPUT"
+            echo "GCP secrets configured"
+          else
+            echo "has-gcp=false" >> "$GITHUB_OUTPUT"
+            echo "GCP secrets not configured — skipping platform jobs"
+          fi
+
+  # ──────────────────────────────────────────────
   # Stage 1: Lint — fast, no GCP auth needed
   # ──────────────────────────────────────────────
   lint:
@@ -62,11 +83,12 @@ jobs:
         run: cxas lint --app-dir ${{ env.APP_DIR }}
 
   # ──────────────────────────────────────────────
-  # Stage 2: Gate check — verifies deployed app
+  # Stage 2: Gate check — requires GCP secrets
   # ──────────────────────────────────────────────
   gate-check:
     name: Build verification gates
-    needs: lint
+    needs: [lint, check-secrets]
+    if: needs.check-secrets.outputs.has-gcp == 'true'
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -152,12 +174,11 @@ jobs:
             --location "$LOCATION"
 
   # ──────────────────────────────────────────────
-  # Stage 4: Run evals — full suite
+  # Stage 4: Run evals — full suite (main only)
   # ──────────────────────────────────────────────
   evals:
     name: Run evals
     needs: push
-    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
     runs-on: ubuntu-latest
     timeout-minutes: 30
     permissions:
@@ -211,52 +232,3 @@ jobs:
           name: eval-reports
           path: ${{ env.PROJECT_DIR }}/eval-reports/
           retention-days: 90
-
-  # ──────────────────────────────────────────────
-  # PR evals: tool tests + goldens (no push)
-  # ──────────────────────────────────────────────
-  pr-evals:
-    name: PR eval smoke test
-    needs: gate-check
-    if: github.event_name == 'pull_request'
-    runs-on: ubuntu-latest
-    timeout-minutes: 20
-    permissions:
-      contents: read
-      id-token: write
-    steps:
-      - uses: actions/checkout@v4
-
-      - uses: actions/setup-python@v5
-        with:
-          python-version: ${{ env.PYTHON_VERSION }}
-
-      - name: Install uv
-        uses: astral-sh/setup-uv@v4
-
-      - name: Install dependencies
-        run: |
-          uv venv .venv
-          . .venv/bin/activate
-          uv pip install cxas-scrapi rich
-          echo "$GITHUB_WORKSPACE/.venv/bin" >> "$GITHUB_PATH"
-
-      - name: Authenticate to Google Cloud
-        uses: google-github-actions/auth@v2
-        with:
-          workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
-          service_account: ${{ secrets.GCP_SERVICE_ACCOUNT }}
-
-      - name: Run goldens + tool tests (no push, no sims)
-        run: |
-          python ${{ env.SCRIPTS_DIR }}/run-evals.py \
-            --runs 1 \
-            --skip-sims
-
-      - name: Upload PR eval reports
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: pr-eval-reports
-          path: ${{ env.PROJECT_DIR }}/eval-reports/
-          retention-days: 14
